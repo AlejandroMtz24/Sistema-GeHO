@@ -1,0 +1,33 @@
+name: GeHO CI - Validación de Estructura
+
+# El robot se activa cuando alguien sube algo a main o develop
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  check-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      - name: Validar carpetas obligatorias
+        run: |
+          ls -d database/mongodb
+          ls -d database/sql-server
+          ls -d docker
+          ls -d docs/evidence
+          ls -d src/backend
+          ls -d src/frontend
+          echo "Estructura de carpetas verificada con éxito ✅"
+
+      - name: Verificar README
+        run: |
+          test -f README.md
+          echo "El manual del proyecto (README) está presente ✅"
